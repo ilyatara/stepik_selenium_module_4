@@ -1,10 +1,18 @@
+import pytest
+
 from .pages.product_page import ProductPage
 
 
-def test_guest_can_add_product_to_basket(browser):
+@pytest.mark.parametrize(
+    'promo',
+    ['offer0', 'offer1', 'offer2', 'offer3', 'offer4', 'offer5', 'offer6',
+     pytest.param('offer7', marks=pytest.mark.xfail(reason="won't fix")),
+     'offer8', 'offer9']
+)
+def test_guest_can_add_product_to_basket(browser, promo):
     # ARRANGE
-    url = 'http://selenium1py.pythonanywhere.com/' \
-          'catalogue/coders-at-work_207/?promo=newYear2019'
+    url = f'http://selenium1py.pythonanywhere.com/' \
+          f'catalogue/coders-at-work_207/?promo={promo}'
     page = ProductPage(browser, url)
     page.open()
     # ACT
