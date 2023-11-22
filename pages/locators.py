@@ -18,3 +18,8 @@ class ProductPageLocators:
     ADDED_PRODUCT_NAME = (By.CSS_SELECTOR, '.alert:nth-of-type(1) .alertinner strong')
     BASKET_PRICE_NOTIFICATION = (By.CSS_SELECTOR, '.alert:nth-of-type(3) .alertinner')
     BASKET_PRICE = (By.CSS_SELECTOR, '.alert:nth-of-type(3) .alertinner strong')
+
+
+class BasePageLocators:
+    LOGIN_LINK = (By.ID, 'login_link')
+    LOGIN_LINK_INVALID = (By.ID, 'login_link_inc')

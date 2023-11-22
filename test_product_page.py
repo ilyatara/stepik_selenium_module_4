@@ -1,6 +1,7 @@
 import pytest
 
 from .pages.product_page import ProductPage
+from .pages.login_page import LoginPage
 from .pages.locators import ProductPageLocators
 
 
@@ -55,3 +56,25 @@ def test_message_disappeared_after_adding_product_to_basket(browser):
     page.add_to_basket()
     # ASSERT
     assert page.is_disappeared(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
+
+
+def test_guest_should_see_login_link_on_product_page(browser):
+    # ARRANGE
+    url = 'http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/'
+    page = ProductPage(browser, url)
+    # ACT
+    page.open()
+    # ASSERT
+    page.should_be_login_link()
+
+
+def test_guest_can_go_to_login_page_from_product_page(browser):
+    # ARRANGE
+    url = 'http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/'
+    product_page = ProductPage(browser, url)
+    product_page.open()
+    # ACT
+    product_page.go_to_login_page()
+    # ASSERT
+    login_page = LoginPage(browser, browser.current_url)
+    login_page.should_be_login_page()
