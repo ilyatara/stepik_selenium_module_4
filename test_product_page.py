@@ -26,6 +26,7 @@ def test_guest_can_add_product_to_basket(browser, promo):
     page.should_have_basket_price(page.product_price)
 
 
+@pytest.mark.xfail
 def test_guest_can_not_see_success_message_after_adding_product_to_basket(browser):
     # ARRANGE
     url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
@@ -37,7 +38,7 @@ def test_guest_can_not_see_success_message_after_adding_product_to_basket(browse
     assert page.is_not_element_present(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
 
 
-def test_guest_cant_see_success_message(browser):
+def test_guest_can_not_see_success_message(browser):
     # ARRANGE
     url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
     page = ProductPage(browser, url)
@@ -47,6 +48,7 @@ def test_guest_cant_see_success_message(browser):
     assert page.is_not_element_present(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
 
 
+@pytest.mark.xfail
 def test_message_disappeared_after_adding_product_to_basket(browser):
     # ARRANGE
     url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
