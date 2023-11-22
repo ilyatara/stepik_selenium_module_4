@@ -16,6 +16,12 @@ class ProductPage(BasePage):
         assert basket_price == product_price,\
             f'Expected basket price: {product_price}, got: {basket_price}'
 
+    def should_not_have_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
+
+    def should_have_success_message_disappeared(self):
+        assert self.is_disappeared(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
+
     @property
     def product_name(self):
         return self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text

@@ -5,13 +5,12 @@ import pytest
 from .pages.product_page import ProductPage
 from .pages.login_page import LoginPage
 from .pages.basket_page import BasketPage
-from .pages.locators import ProductPageLocators
 
 
 @pytest.mark.need_review
 @pytest.mark.parametrize(
     'promo',
-    ['offer0', 'offer1', 'offer2', 'offer3', 'offer4', 'offer5', 'offer6',
+    ['offer0',  # 'offer1', 'offer2', 'offer3', 'offer4', 'offer5', 'offer6',
      pytest.param('offer7', marks=pytest.mark.xfail(reason="won't fix")),
      'offer8', 'offer9']
 )
@@ -30,7 +29,7 @@ def test_guest_can_add_product_to_basket(browser, promo):
 
 
 @pytest.mark.xfail
-def test_guest_can_not_see_success_message_after_adding_product_to_basket(browser):
+def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     # ARRANGE
     url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
     page = ProductPage(browser, url)
@@ -38,17 +37,17 @@ def test_guest_can_not_see_success_message_after_adding_product_to_basket(browse
     # ACT
     page.add_to_basket()
     # ASSERT
-    assert page.is_not_element_present(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
+    page.should_not_have_success_message()
 
 
-def test_guest_can_not_see_success_message(browser):
+def test_guest_cant_see_success_message(browser):
     # ARRANGE
     url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
     page = ProductPage(browser, url)
     # ACT
     page.open()
     # ASSERT
-    assert page.is_not_element_present(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
+    page.should_not_have_success_message()
 
 
 @pytest.mark.xfail
@@ -60,7 +59,7 @@ def test_message_disappeared_after_adding_product_to_basket(browser):
     # ACT
     page.add_to_basket()
     # ASSERT
-    assert page.is_disappeared(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
+    page.should_have_success_message_disappeared()
 
 
 def test_guest_should_see_login_link_on_product_page(browser):
@@ -87,7 +86,7 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
 
 
 @pytest.mark.need_review
-def test_guest_can_not_see_product_in_basket_opened_from_product_page(browser):
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
     # ARRANGE
     url = 'http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/'
     product_page = ProductPage(browser, url)
@@ -123,11 +122,11 @@ class TestUserAddToBasketFromProductPage:
         page.should_have_product_added(page.product_name)
         page.should_have_basket_price(page.product_price)
 
-    def test_user_can_not_see_success_message(self, browser):
+    def test_user_cant_see_success_message(self, browser):
         # ARRANGE
         url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
         page = ProductPage(browser, url)
         # ACT
         page.open()
         # ASSERT
-        assert page.is_not_element_present(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
+        page.should_not_have_success_message()

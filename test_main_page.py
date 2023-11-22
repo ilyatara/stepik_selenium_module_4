@@ -28,7 +28,7 @@ class TestLoginFromMainPage:
         page.should_be_login_link()
 
 
-def test_guest_can_not_see_product_in_basket_opened_from_main_page(browser):
+def test_guest_cant_see_product_in_basket_opened_from_main_page(browser):
     # ARRANGE
     url = 'http://selenium1py.pythonanywhere.com/'
     page = MainPage(browser, url)
