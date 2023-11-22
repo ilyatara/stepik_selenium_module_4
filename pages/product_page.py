@@ -17,10 +17,12 @@ class ProductPage(BasePage):
             f'Expected basket price: {product_price}, got: {basket_price}'
 
     def should_not_have_success_message(self):
-        assert self.is_not_element_present(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
+        assert self.is_not_element_present(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION),\
+            'Success message is present'
 
     def should_have_success_message_disappeared(self):
-        assert self.is_disappeared(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
+        assert self.is_disappeared(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION),\
+            'Success message haven\'t disappeared'
 
     @property
     def product_name(self):
