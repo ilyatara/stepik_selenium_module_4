@@ -1,3 +1,5 @@
+import time
+
 import pytest
 
 from .pages.product_page import ProductPage
@@ -6,7 +8,7 @@ from .pages.basket_page import BasketPage
 from .pages.locators import ProductPageLocators
 
 
-@pytest.mark.skip
+@pytest.mark.need_review
 @pytest.mark.parametrize(
     'promo',
     ['offer0', 'offer1', 'offer2', 'offer3', 'offer4', 'offer5', 'offer6',
@@ -71,6 +73,7 @@ def test_guest_should_see_login_link_on_product_page(browser):
     page.should_be_login_link()
 
 
+@pytest.mark.need_review
 def test_guest_can_go_to_login_page_from_product_page(browser):
     # ARRANGE
     url = 'http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/'
@@ -83,6 +86,7 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     login_page.should_be_login_page()
 
 
+@pytest.mark.need_review
 def test_guest_can_not_see_product_in_basket_opened_from_product_page(browser):
     # ARRANGE
     url = 'http://selenium1py.pythonanywhere.com/en-gb/catalogue/the-city-and-the-stars_95/'
@@ -94,3 +98,36 @@ def test_guest_can_not_see_product_in_basket_opened_from_product_page(browser):
     basket_page = BasketPage(browser, browser.current_url)
     basket_page.should_not_have_items()
     basket_page.should_have_basket_empty_message()
+
+
+class TestUserAddToBasketFromProductPage:
+    @pytest.fixture(scope='function', autouse=True)
+    def setup(self, browser):
+        url = 'https://selenium1py.pythonanywhere.com/accounts/login/'
+        login_page = LoginPage(browser, url)
+        login_page.open()
+        timestamp = int(time.time())
+        login_page.register_new_user(email=f'{timestamp}@test.com',
+                                     password=f'{timestamp}')
+        login_page.should_be_authorized_user()
+
+    @pytest.mark.need_review
+    def test_user_can_add_product_to_basket(self, browser):
+        # ARRANGE
+        url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
+        page = ProductPage(browser, url)
+        page.open()
+        # ACT
+        page.add_to_basket()
+        # ASSERT
+        page.should_have_product_added(page.product_name)
+        page.should_have_basket_price(page.product_price)
+
+    def test_user_can_not_see_success_message(self, browser):
+        # ARRANGE
+        url = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
+        page = ProductPage(browser, url)
+        # ACT
+        page.open()
+        # ASSERT
+        assert page.is_not_element_present(*ProductPageLocators.ADDED_PRODUCT_NOTIFICATION)
