@@ -9,7 +9,7 @@ class ProductPage(BasePage):
     def should_have_product_added(self, product_name):
         added_product_name = self.browser.find_element(*ProductPageLocators.ADDED_PRODUCT_NAME).text
         assert added_product_name == product_name,\
-            f'Expected added product name: "{self.product_name}", got: "{added_product_name}"'
+            f'Expected added product name: "{product_name}", got: "{added_product_name}"'
 
     def should_have_basket_price(self, product_price):
         basket_price = self.browser.find_element(*ProductPageLocators.BASKET_PRICE).text
