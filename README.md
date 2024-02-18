@@ -11,10 +11,10 @@
 
 Запуск всех тестов в FireFox с интерфейсом на французском языке:
 ```
-pytest -v --tb=line --browser=firefox --language=fr
+pytest -v --tb=line --browser_name=firefox --language=fr
 ```
 
 Запуск тестов с маркером need_review в Chrome на английском языке:
 ```
-pytest -v --tb=line -m need_review
+pytest -v --tb=line -m=need_review
 ```
